@@ -1,0 +1,1 @@
+g++ -o sdl_example src/main.cpp src/quickcg.cpp src/camera.cpp src/world.cpp src/ground.cpp src/video.cpp $(sdl-config --cflags --libs) 
