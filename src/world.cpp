@@ -86,7 +86,8 @@ void World::updateOnStrikeBatsman() {
 }
 
 void World::setOnStrikeBatsman() {
-    this->onStrikeBatsman.loadVideo("src/pics/PlayerMovements/BackfootDefense", 15, 2);
+    this->onStrikeBatsman.loadVideo("src/pics/PlayerMovements/BackfootDefense", 7, 1);
+    this->onStrikeBatsman.resizeVideo(50.0);
     this->onStrikeBatsman.paintObject(RGB_White);
     this->onStrikeBatsman.play();
 }

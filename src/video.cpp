@@ -42,7 +42,7 @@ std::vector<QuickCG::ColorRGB>& VideoCG::getNextFrame() {
     }
 
     if (this->lastFrameIndex >= this->frames.size() - 1) {
-        this->lastFrameIndex = 0;
+        return this->frames[this->lastFrameIndex];
     }
 
     int frameChangeInterval = 1000/this->fps;
@@ -66,4 +66,40 @@ void VideoCG::paintObject(QuickCG::ColorRGB color) {
             }
         }
     }
+}
+
+void VideoCG::resizeVideo(float percentage) {
+    if (percentage <= 0 || percentage > 100) {
+        throw std::invalid_argument("Percentage must be between 0 and 100.");
+    }
+
+    // Get the original dimensions
+    int originalHeight = this->height;
+    int originalWidth = this->width;
+
+    // Calculate new dimensions while keeping aspect ratio
+    int newHeight = static_cast<int>(originalHeight * (percentage / 100.0));
+    int newWidth = static_cast<int>(originalWidth * (percentage / 100.0));
+
+    // Scale factors
+    float rowScale = static_cast<float>(originalHeight) / newHeight;
+    float colScale = static_cast<float>(originalWidth) / newWidth;
+
+    // Fill the resized image using nearest-neighbor interpolation
+    for (int k = 0; k < this->frames.size(); k++) {
+        std::vector<QuickCG::ColorRGB> resizedImage(newHeight * newWidth);
+        for (int i = 0; i < newHeight; ++i) {
+            for (int j = 0; j < newWidth; ++j) {
+                int origRow = static_cast<int>(i * rowScale);
+                int origCol = static_cast<int>(j * colScale);
+                resizedImage[i * newWidth + j] = this->frames[k][origRow * originalWidth + origCol];
+            }
+        }
+        this->frames[k] = resizedImage;
+    }
+
+    this->height = newHeight;
+    this->width = newWidth;
+
+    return;
 }
