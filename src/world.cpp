@@ -5,6 +5,7 @@
 World::World(const std::string& name, long height, long width)
     : name(name), height(height), width(width) {
         this->worldData = std::vector<std::vector<Uint32> >(height, std::vector<Uint32>(width, 0));
+        this->baseWorldData = this->worldData;
         this->setOnStrikeBatsman();
     }
 
@@ -70,12 +71,13 @@ void World::clipScene(std::vector<std::vector<Uint32> >& clippedData, long h, lo
 }
 
 void World::updateScene() {
-    this->createCricketGround();
     this->updateOnStrikeBatsman();
 }
 
 void World::updateOnStrikeBatsman() {
+    int lastFrame = this->onStrikeBatsman.lastFrameIndex;
     std::vector<QuickCG::ColorRGB> nextFrame = this->onStrikeBatsman.getNextFrame();
+    if (lastFrame == this->onStrikeBatsman.lastFrameIndex) return;
     int h = this->onStrikeBatsman.height, w = this->onStrikeBatsman.width;
     int deltaH = (this->height - h) / 2;
     int deltaW = (this->width - w) / 2;
@@ -92,7 +94,10 @@ void World::setOnStrikeBatsman() {
 void World::drawOnWorld(std::vector<QuickCG::ColorRGB> data, int posH, int posW, int h, int w) {
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
-            if (data[i * w + j] == RGB_Black) continue;
+            if (data[i * w + j] == RGB_Black) {
+                this->worldData[posH + i][posW + j] = this->baseWorldData[posH + i][posW + j];
+                continue;
+            }
             this->worldData[posH + i][posW + j] = RGBtoINT(data[i * w + j]);
         }
     }
@@ -107,4 +112,5 @@ void World::createCricketGround() {
     int deltaW = (this->width - w) / 2;
 
     this->drawOnWorld(groundImage, deltaH, deltaW, h, w);
+    this->baseWorldData = this->worldData;
 }

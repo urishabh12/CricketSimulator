@@ -13,6 +13,7 @@ private:
     long height;
     long width;
     std::vector<std::vector<Uint32> > worldData;
+    std::vector<std::vector<Uint32> > baseWorldData;
     VideoCG onStrikeBatsman;
 
     void createCricketGround();
