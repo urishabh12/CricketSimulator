@@ -79,7 +79,7 @@ void World::updateOnStrikeBatsman() {
     std::vector<QuickCG::ColorRGB> nextFrame = this->onStrikeBatsman.getNextFrame();
     if (lastFrame == this->onStrikeBatsman.lastFrameIndex) return;
     int h = this->onStrikeBatsman.height, w = this->onStrikeBatsman.width;
-    int deltaH = (this->height - h) / 2;
+    int deltaH = ((this->height - h) / 2) - 320;
     int deltaW = (this->width - w) / 2;
 
     this->drawOnWorld(nextFrame, deltaH, deltaW, h, w);
@@ -87,7 +87,7 @@ void World::updateOnStrikeBatsman() {
 
 void World::setOnStrikeBatsman() {
     this->onStrikeBatsman.loadVideo("src/pics/PlayerMovements/BackfootDefense", 7, 1);
-    this->onStrikeBatsman.resizeVideo(50.0);
+    this->onStrikeBatsman.resizeVideo(30.0);
     this->onStrikeBatsman.paintObject(RGB_White);
     this->onStrikeBatsman.play();
 }
