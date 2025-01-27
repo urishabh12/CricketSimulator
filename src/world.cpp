@@ -38,6 +38,7 @@ void World::setBlankWorld(Uint32 color) {
             this->worldData[i][j] = color;
         }
     }
+    this->baseWorldData = this->worldData;
     this->createCricketGround();
 }
 
@@ -47,7 +48,7 @@ void World::clipScene(std::vector<std::vector<Uint32> >& clippedData, long h, lo
     if (w > width) w = width;
 
     // Find the center of the worldData
-    long centerY = height / 2;
+    long centerY = (height / 2)-300;
     long centerX = width / 2;
 
     // Calculate the start and end positions for clipping
