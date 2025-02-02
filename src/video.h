@@ -21,6 +21,7 @@ public:
     void play();
     void stop();
     std::vector<QuickCG::ColorRGB>& getNextFrame();
+    std::vector<QuickCG::ColorRGB>& getCurrFrame();
     void paintObject(QuickCG::ColorRGB color);
     void resizeVideo(float percentage);
 };

@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include "quickcg.h"
+#include "ball.h"
 #include "video.h"
 
 class World {
@@ -15,6 +16,8 @@ private:
     std::vector<std::vector<Uint32> > worldData;
     std::vector<std::vector<Uint32> > baseWorldData;
     VideoCG onStrikeBatsman;
+    VideoCG bowler;
+    Ball ball;
 
     void createCricketGround();
 
@@ -30,13 +33,20 @@ public:
 
     // Setters
     void setName(const std::string& brand);
-    void setBlankWorld(Uint32 color);
+    void setBlankWorld(Uint32 baseColor, Uint32 skipColor);
 
     void clipScene(std::vector<std::vector<Uint32> >& clippedData, long h, long w);
+    void followBall(std::vector<std::vector<Uint32> >& clippedData, long h, long w);
     void updateScene();
     void updateOnStrikeBatsman();
     void setOnStrikeBatsman();
+    void updateBowler();
+    void setBowler();
+    void updateBall();
+    void setBall();
     void drawOnWorld(std::vector<QuickCG::ColorRGB> data, int posX, int posY, int h, int w);
+    void clearOnWorld(std::vector<QuickCG::ColorRGB> data, int posX, int posY, int h, int w);
+    void clearWorld();
 };
 
 #endif // WORLD_H

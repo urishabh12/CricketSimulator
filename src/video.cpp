@@ -42,15 +42,25 @@ std::vector<QuickCG::ColorRGB>& VideoCG::getNextFrame() {
     }
 
     if (this->lastFrameIndex >= this->frames.size() - 1) {
+        // this->lastFrameIndex = 0;
         return this->frames[this->lastFrameIndex];
     }
 
     int frameChangeInterval = 1000/this->fps;
     long getCurrTime = QuickCG::getTicks();
+    long timeDiff = getCurrTime - this->lastFrameTime;
 
-    if (getCurrTime - this->lastFrameTime > frameChangeInterval) {
-        this->lastFrameIndex++;
+    if (timeDiff > frameChangeInterval) {
+        this->lastFrameIndex += ceil(timeDiff / frameChangeInterval);
         this->lastFrameTime = getCurrTime;
+    }
+
+    return this->frames[this->lastFrameIndex]; 
+}
+
+std::vector<QuickCG::ColorRGB>& VideoCG::getCurrFrame() {
+    if (!this->playing || this->lastFrameIndex == -1) {
+        return this->frames[0];
     }
 
     return this->frames[this->lastFrameIndex]; 

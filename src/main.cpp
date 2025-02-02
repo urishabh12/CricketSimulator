@@ -12,15 +12,18 @@ using namespace QuickCG;
 
 int main(int /*argc*/, char */*argv*/[])
 { 
-  Camera frontCamera("Camera", 1000, 1000, 10);
+  Camera frontCamera("Camera", 900, 900, 10);
   World cricketSim("Cricket Sim", 3000, 3000);
-  cricketSim.setBlankWorld(RGBtoINT(RGB_White));
+  cricketSim.setBlankWorld(RGBtoINT(ColorRGB(49, 47, 54)), RGBtoINT(RGB_White));
 
   std::vector<std::vector<Uint32> > clippedData;
   screen(frontCamera.getWidth(),frontCamera.getHeight(),0, "Cricket Sim");
 
+
+  //Timing
+  long oldTime, time = getTicks();
   while(!done()) {
-    cricketSim.clipScene(clippedData, frontCamera.getHeight(), frontCamera.getWidth());
+    cricketSim.followBall(clippedData, frontCamera.getHeight(), frontCamera.getWidth());
 
     int w = frontCamera.getWidth(), h = frontCamera.getHeight();
     //draw the result to the screen
@@ -30,8 +33,12 @@ int main(int /*argc*/, char */*argv*/[])
       pset(x, y, INTtoRGB(clippedData[y][x]));
     }
 
+    //timing for input and FPS counter
+    oldTime = time;
+    time = getTicks();
+    double frameTime = (time - oldTime) / 1000.0; //frameTime is the time this frame has taken, in seconds
+    print(1.0 / frameTime); //FPS counter
     redraw();
-    cls();
     cricketSim.updateScene();
   }
   return 0;
