@@ -1,5 +1,6 @@
 #include "world.h"
 #include "ground.h"
+#include "textures.h"
 
 //World Positions
 int worldHeight = 3000;
@@ -40,12 +41,19 @@ void World::setName(const std::string& name) {
     this->name = name;
 }
 
+//Should be renamed set world
 void World::setBlankWorld(Uint32 baseColor, Uint32 skipColor) {
-    for(int i = 0; i < this->height; i++)
-    {
+    std::vector<QuickCG::ColorRGB> cloudTexture = Textures::getCloudTexture(1500, 3000);
+    for(int i = 0; i < this->height/2; i++) {
         for (int j = 0; j < this->width; j++) {
-            if((i+j) % 16) this->worldData[i][j] = baseColor;
-            else this->worldData[i][j] = skipColor;
+            this->worldData[i][j] = RGBtoINT(cloudTexture[i * this->width + j]);
+        }
+    }
+
+    std::vector<QuickCG::ColorRGB> waterTexture = Textures::getWaterTexture(3000, 3000);
+    for(int i = this->height/2; i < this->height; i++) {
+        for (int j = 0; j < this->width; j++) {
+            this->worldData[i][j] = RGBtoINT(waterTexture[i * this->width + j]);
         }
     }
     this->baseWorldData = this->worldData;
@@ -144,7 +152,7 @@ void World::updateBowler() {
 }
 
 void World::setOnStrikeBatsman() {
-    this->onStrikeBatsman.loadVideo("src/pics/PlayerMovements/DhoniSix", 13, 1);
+    this->onStrikeBatsman.loadVideo("src/pics/PlayerMovements/KohliCoverDrive", 12, 1);
     this->onStrikeBatsman.resizeVideo(30.0);
     this->onStrikeBatsman.paintObject(QuickCG::ColorRGB(4,118,208));
     this->onStrikeBatsman.play();
@@ -212,6 +220,25 @@ void World::createCricketGround() {
     std::vector<ColorRGB> groundImage;
     loadImage(groundImage, w, h, "src/pics/CricketGroundFrontCropped.png");
 
+    std::vector<ColorRGB> grassTexture = Textures::getGrassTexture(h, w);
+    std::vector<ColorRGB> brownTexture = Textures::getBrownGroundTexture(h, w);
+    for (int i = 0; i < h; i++) {
+        for (int j= 0; j < w; j++) {
+            int currIndex = i * w + j;
+            if (RGBtoINT(groundImage[currIndex]) == RGBtoINT(ColorRGB(63,155,11)) || RGBtoINT(groundImage[currIndex]) == RGBtoINT(ColorRGB(88,202,23))) {
+                groundImage[currIndex] = grassTexture[currIndex];
+            }
+
+            if (RGBtoINT(groundImage[currIndex]) == RGBtoINT(ColorRGB(150,75,0))) {
+                groundImage[currIndex] = brownTexture[currIndex];
+            }
+
+            if (RGBtoINT(groundImage[currIndex]) == RGBtoINT(ColorRGB(83,192,20))) {
+                groundImage[currIndex] = RGB_White;
+            }
+        }
+    }
+    
     int deltaH = (this->height - h) / 2;
     int deltaW = (this->width - w) / 2;
 

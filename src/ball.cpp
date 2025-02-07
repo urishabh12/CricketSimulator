@@ -1,8 +1,8 @@
 #include "ball.h"
 
 void Ball::createBall() {
-    this->height = 6;
-    this->width = 6;
+    this->height = 5;
+    this->width = 5;
     int centerX = this->height / 2;
     int centerY = this->width / 2;
     int radius = this->height / 2;
@@ -28,18 +28,20 @@ void Ball::updateBall(std::pair<int, int> bowlerPosition, std::pair<int, int> ba
         //Bowler to batsman
         int deltaX = (3000 - this->height) / 2;
         int deltaY = (3000 - this->width) / 2;
+        //cover drive
+        batsmanPosition.second -= 25;
         int x1 = deltaX + bowlerPosition.first, y1 = deltaY + bowlerPosition.second, 
                     x3 = deltaX + batsmanPosition.first, y3 = deltaY + batsmanPosition.second;
-        int x2 = (x3 + x1) / 2 - 30;
-        int y2 = (y3 + y1) / 2 + 30;
+        int x2 = (x3 + x1) / 2;
+        int y2 = (y3 + y1) / 2;
         this->linearInterpolation3Points(x1, y1, x2, y2, x3, y3, 1);
         this->currMovementIndex = 0;
         this->lastFrameTime = QuickCG::getTicks();
         this->currMovementDuration = 1000;
 
         //Batsman to boundary
-        int x4 = deltaX + 800, y4 = deltaY + 800;
-        this->quadraticInterpolation(x3, y3, x4, y4, -1800, 500);
+        int x4 = deltaX + 800, y4 = deltaY - 800;
+        this->quadraticInterpolation(x3, y3, x4, y4, -1800, -500);
     }
 
     if (this->currMovementIndex >= this->movementInterpolated.size()) {
