@@ -1,7 +1,7 @@
 #ifndef _textures_h_included
 #define _textures_h_included
 
-#include "quickcg.h"
+#include "quickcg2.h"
 #include <iostream>
 #include <fstream>
 #include <cmath>

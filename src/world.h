@@ -4,7 +4,7 @@
 
 #include <string>
 #include <iostream>
-#include "quickcg.h"
+#include "quickcg2.h"
 #include "ball.h"
 #include "video.h"
 

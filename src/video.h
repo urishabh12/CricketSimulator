@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 #include <cmath>
-#include "quickcg.h"
+#include "quickcg2.h"
 
 class VideoCG {
 public:

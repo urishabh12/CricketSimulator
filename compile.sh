@@ -1,1 +1,1 @@
-g++ -o sdl_example src/main.cpp src/quickcg.cpp src/camera.cpp src/world.cpp src/ground.cpp src/video.cpp src/ball.cpp src/textures.cpp $(sdl-config --cflags --libs) 
+g++ -std=c++11 -o sdl_example src/main.cpp src/quickcg2.cpp src/camera.cpp src/world.cpp src/ground.cpp src/video.cpp src/ball.cpp src/textures.cpp $(pkg-config --cflags --libs opencv4) $(sdl-config --cflags --libs)
